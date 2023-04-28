@@ -71,5 +71,6 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  home.file."Library/Application Support/Code/User/settings.json".source = config.lib.file.mkOutOfStoreSymlink ./settings.json;
+  home.file."Library/Application Support/Code/User/settings.json".source = config.lib.file.mkOutOfStoreSymlink ./vscode/settings.json;
+  home.file.".vscode/argv.json".source = config.lib.file.mkOutOfStoreSymlink ./vscode/argv.json;
 }
