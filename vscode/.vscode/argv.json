@@ -8,7 +8,7 @@
 {
 	// Use software rendering instead of hardware accelerated rendering.
 	// This can help in cases where you see rendering issues in VS Code.
-        // https://stackoverflow.com/a/73132799
+    // https://stackoverflow.com/a/73132799
 	"disable-hardware-acceleration": true,
 
 	// Allows to disable crash reporting.
