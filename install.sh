@@ -11,7 +11,6 @@ sudo true
 NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Add Homebrew to your PATH:
-(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> $HOME/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Install Nix via the recommended multi-user installation
