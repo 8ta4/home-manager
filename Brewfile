@@ -1,3 +1,5 @@
 cask "alacritty"
 cask "microsoft-edge"
+cask "obs"
+cask "utm"
 cask "visual-studio-code"
