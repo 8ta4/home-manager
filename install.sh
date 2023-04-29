@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
+set -e
 
 # Install brew non-interactively using NONINTERACTIVE environment variable
 NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Add Homebrew to your PATH:
+(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> $HOME/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Install Nix via the recommended multi-user installation
 yes | sh <(curl -L https://nixos.org/nix/install)
@@ -20,14 +25,8 @@ if [ -d "$HOME/.config/home-manager" ]; then
   rm -rf "$HOME/.config/home-manager"
 fi
 
-# Install Git using brew
-brew install git
-
 # Clone GitHub repo to ~/.config/home-manager
 git clone https://github.com/8ta4/home-manager.git "$HOME/.config/home-manager"
-
-# Uninstall Git using brew
-brew uninstall git
 
 # Change directory to cloned repo
 cd "$HOME/.config/home-manager"
