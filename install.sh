@@ -10,11 +10,14 @@ sudo true
 # Install brew non-interactively using NONINTERACTIVE environment variable
 NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# Add Homebrew to your PATH:
+# Add Homebrew to your PATH
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Install Nix via the recommended multi-user installation
 yes | sh <(curl -L https://nixos.org/nix/install)
+
+# Nix won't work in active shell sessions until you restart them
+. '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 
 # Install home-manager
 nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
