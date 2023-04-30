@@ -29,8 +29,8 @@ done
 yes | sh <(curl -L https://nixos.org/nix/install)
 
 # Nix won't work in active shell sessions until you restart them
-. '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-
+# https://stackoverflow.com/a/24696790
+exec $SHELL << EOF
 # Install home-manager
 nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
 nix-channel --update
@@ -54,3 +54,4 @@ cd "$HOME/.config/home-manager"
 # Run home-manager switch and brew bundle
 home-manager switch
 brew bundle
+EOF

@@ -47,6 +47,9 @@
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
+    "/Library/Application Support/Google/Chrome/External Extensions/".source = ./. + "/External\ Extensions";
+    "Library/Application Support/Code/User/settings.json".source = config.lib.file.mkOutOfStoreSymlink ./vscode/settings.json;
+    ".vscode".source = config.lib.file.mkOutOfStoreSymlink ./vscode/.vscode;
 
     # # You can also set the file content immediately.
     # ".gradle/gradle.properties".text = ''
@@ -89,7 +92,4 @@
     };
     profileExtra = builtins.readFile ./.zprofile;
   };
-
-  home.file."Library/Application Support/Code/User/settings.json".source = config.lib.file.mkOutOfStoreSymlink ./vscode/settings.json;
-  home.file.".vscode".source = config.lib.file.mkOutOfStoreSymlink ./vscode/.vscode;
 }
