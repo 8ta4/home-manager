@@ -1,4 +1,5 @@
 cask "alacritty"
+cask "google-chrome"
 cask "keepassxc"
 cask "microsoft-edge"
 cask "obs"
