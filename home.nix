@@ -75,6 +75,10 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  programs.autojump = {
+    enable = true;
+  };
+
   programs.atuin = {
     enable = true;
   };
