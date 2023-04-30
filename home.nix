@@ -22,7 +22,6 @@
     # # "Hello, world!" when run.
     # pkgs.hello
     pkgs.fd
-    pkgs.git
     pkgs.ripgrep
     pkgs.tldr
 
@@ -80,6 +79,10 @@
   };
 
   programs.atuin = {
+    enable = true;
+  };
+
+  programs.git = {
     enable = true;
   };
 
