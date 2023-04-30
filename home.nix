@@ -1,9 +1,12 @@
 { config, pkgs, ... }:
 
+let
+  username = "a";
+in
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "a";
+  home.username = username;
   home.homeDirectory = "/Users/a";
 
   # This value determines the Home Manager release that your configuration is
@@ -84,6 +87,7 @@
 
   programs.git = {
     enable = true;
+    userName = username;
   };
 
   programs.neovim = {
