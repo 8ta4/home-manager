@@ -12,6 +12,18 @@ NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ho
 
 # Add Homebrew to your PATH
 eval "$(/opt/homebrew/bin/brew shellenv)"
+ 
+# Clean up the old backup file
+# https://github.com/NixOS/nix/blob/89d3cc5a47a448f624ea4c9b43eeee00dcc88a21/scripts/install-multi-user.sh#L36-L37
+readonly PROFILE_TARGETS=("/etc/bashrc" "/etc/profile.d/nix.sh" "/etc/zshrc" "/etc/bash.bashrc" "/etc/zsh/zshrc")
+readonly PROFILE_BACKUP_SUFFIX=".backup-before-nix"
+
+for target in "${PROFILE_TARGETS[@]}"; do
+  backup_target="${target}${PROFILE_BACKUP_SUFFIX}"
+  if [ -e "${backup_target}" ]; then
+    sudo mv "${backup_target}" "${target}"
+  fi
+done
 
 # Install Nix via the recommended multi-user installation
 yes | sh <(curl -L https://nixos.org/nix/install)
