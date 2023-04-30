@@ -72,6 +72,12 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  programs.neovim = {
+    enable = true;
+    viAlias = true;
+    vimAlias = true;
+  };
+
   programs.zsh = {
     enable = true;
     profileExtra = builtins.readFile ./.zprofile;
