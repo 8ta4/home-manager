@@ -31,6 +31,15 @@ yes | sh <(curl -L https://nixos.org/nix/install)
 # Nix won't work in active shell sessions until you restart them
 # https://stackoverflow.com/a/24696790
 exec $SHELL << EOF
+set -e
+
+# https://github.com/NixOS/nix/blob/89d3cc5a47a448f624ea4c9b43eeee00dcc88a21/doc/manual/src/installation/uninstall.md?plain=1#L68C1-L72
+# Nix
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
+# End Nix
+
 # Install home-manager
 nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
 nix-channel --update
