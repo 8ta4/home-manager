@@ -80,6 +80,10 @@
 
   programs.zsh = {
     enable = true;
+    oh-my-zsh = {
+      enable = true;
+      theme = "robbyrussell"; 
+    };
     profileExtra = builtins.readFile ./.zprofile;
   };
 
