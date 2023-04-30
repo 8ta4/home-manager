@@ -1,9 +1,12 @@
 { config, pkgs, ... }:
 
+let
+  username = "a";
+in
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "a";
+  home.username = username;
   home.homeDirectory = "/Users/a";
 
   # This value determines the Home Manager release that your configuration is
@@ -22,7 +25,6 @@
     # # "Hello, world!" when run.
     # pkgs.hello
     pkgs.fd
-    pkgs.git
     pkgs.ripgrep
     pkgs.tldr
 
@@ -75,14 +77,31 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  programs.autojump = {
+    enable = true;
+  };
+
+  programs.atuin = {
+    enable = true;
+  };
+
+  programs.git = {
+    enable = true;
+    userName = username;
+    userEmail = "a@example.com";
+  };
+
   programs.neovim = {
     enable = true;
+    extraConfig = builtins.readFile ./.vimrc;
     viAlias = true;
     vimAlias = true;
   };
 
   programs.zsh = {
     enable = true;
+    enableAutosuggestions = true;
+    enableSyntaxHighlighting = true;
     oh-my-zsh = {
       enable = true;
       plugins = [
