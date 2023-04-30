@@ -21,9 +21,10 @@
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     # pkgs.hello
-    pkgs.git
     pkgs.fd
+    pkgs.git
     pkgs.ripgrep
+    pkgs.tldr
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -71,8 +72,21 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  programs.neovim = {
+    enable = true;
+    viAlias = true;
+    vimAlias = true;
+  };
+
   programs.zsh = {
     enable = true;
+    oh-my-zsh = {
+      enable = true;
+      plugins = [
+        "git"
+      ];
+      theme = "robbyrussell"; 
+    };
     profileExtra = builtins.readFile ./.zprofile;
   };
 

@@ -1,4 +1,5 @@
 cask "alacritty"
+cask "keepassxc"
 cask "microsoft-edge"
 cask "obs"
 cask "utm"
