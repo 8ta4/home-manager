@@ -29,16 +29,21 @@ done
 yes | sh <(curl -L https://nixos.org/nix/install)
 
 # Nix won't work in active shell sessions until you restart them
-# https://stackoverflow.com/a/24696790
-exec $SHELL << EOF
-set -e
+# https://github.com/NixOS/nix/issues/3435
+# https://github.com/NixOS/nix/blob/89d3cc5a47a448f624ea4c9b43eeee00dcc88a21/doc/manual/src/installation/uninstall.md?plain=1#L70
+# Retry sourcing nix-daemon.sh until it succeeds or the maximum number of retries is reached
+retries=0
+max_retries=5
+while [ $retries -lt $max_retries ]; do
+  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' && break
+  retries=$((retries + 1))
+  sleep 1
+done
 
-# https://github.com/NixOS/nix/blob/89d3cc5a47a448f624ea4c9b43eeee00dcc88a21/doc/manual/src/installation/uninstall.md?plain=1#L68C1-L72
-# Nix
-if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+if [ $retries -eq $max_retries ]; then
+  echo "Failed to source nix-daemon.sh after $max_retries retries."
+  exit 1
 fi
-# End Nix
 
 # Install home-manager
 nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
@@ -63,4 +68,3 @@ cd "$HOME/.config/home-manager"
 # Run home-manager switch and brew bundle
 home-manager switch
 brew bundle
-EOF
