@@ -50,6 +50,7 @@ in
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
     "/Library/Application Support/Google/Chrome/External Extensions/".source = ./. + "/External\ Extensions";
+    
     "Library/Application Support/Code/User/settings.json".source = config.lib.file.mkOutOfStoreSymlink ./vscode/settings.json;
     ".vscode".source = config.lib.file.mkOutOfStoreSymlink ./vscode/.vscode;
 
