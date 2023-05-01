@@ -1,1 +1,5 @@
 Brewfile.lock.json
+
+# https://github.com/pqrs-org/Karabiner-Elements/issues/3248#issuecomment-1283082631 
+karabiner
+!karabiner/karabiner.json
