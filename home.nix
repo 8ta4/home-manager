@@ -113,6 +113,7 @@ in
     enable = true;
     enableAutosuggestions = true;
     enableSyntaxHighlighting = true;
+    initExtra = builtins.readFile ./.zshrc;
     oh-my-zsh = {
       enable = true;
       plugins = [
