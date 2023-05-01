@@ -106,6 +106,7 @@ in
   
   programs.tmux = {
     enable = true;
+    keyMode = "vi";
   };
 
   programs.zsh = {
