@@ -51,7 +51,10 @@ in
     # ".screenrc".source = dotfiles/screenrc;
     "/Library/Application Support/Google/Chrome/External Extensions/".source = ./. + "/External\ Extensions";
 
-    "/.config/karabiner/karabiner.json".source = config.lib.file.mkOutOfStoreSymlink ./karabiner.json;
+    # Do not make a symlink to karabiner.json directly.
+    # Karabiner-Elements will fail to detect the configuration file update and fail to reload the configuration if karabiner.json is a symbolic link.
+    # https://karabiner-elements.pqrs.org/docs/manual/misc/configuration-file-path/#:~:text=Do%20not%20make,a%20symbolic%20link.
+    "/.config/karabiner".source = config.lib.file.mkOutOfStoreSymlink ./karabiner;
 
     "Library/Application Support/Code/User/settings.json".source = config.lib.file.mkOutOfStoreSymlink ./vscode/settings.json;
     ".vscode".source = config.lib.file.mkOutOfStoreSymlink ./vscode/.vscode;
