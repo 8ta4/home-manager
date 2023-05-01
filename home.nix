@@ -103,6 +103,10 @@ in
     viAlias = true;
     vimAlias = true;
   };
+  
+  programs.tmux = {
+    enable = true;
+  };
 
   programs.zsh = {
     enable = true;
