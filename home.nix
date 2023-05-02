@@ -49,6 +49,9 @@ in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
+    
+    "/.config/alacritty/alacritty.yml".source = ./alacritty.yml;
+    
     "/Library/Application Support/Google/Chrome/External Extensions/".source = ./. + "/External\ Extensions";
 
     # Do not make a symlink to karabiner.json directly.
