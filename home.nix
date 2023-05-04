@@ -103,6 +103,9 @@ in
   programs.neovim = {
     enable = true;
     extraConfig = builtins.readFile ./.vimrc;
+    plugins = with pkgs.vimPlugins; [
+      vim-surround
+    ];
     viAlias = true;
     vimAlias = true;
   };
