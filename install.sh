@@ -43,6 +43,7 @@ else
 fi
 
 ## Install Homebrew
+# https://github.com/Homebrew/install/blob/fc8acb0828f89f8aa83162000db1b49de71fa5d8/install.sh#L313-L326
 # Need sudo access on macOS
 # https://github.com/Homebrew/install/blob/fc8acb0828f89f8aa83162000db1b49de71fa5d8/install.sh#L228
 # Install brew non-interactively using NONINTERACTIVE environment variable
