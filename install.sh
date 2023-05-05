@@ -26,21 +26,30 @@ if ! command -v nix >/dev/null 2>&1; then
   # https://github.com/NixOS/nix/issues/3435
   # https://github.com/NixOS/nix/blob/89d3cc5a47a448f624ea4c9b43eeee00dcc88a21/doc/manual/src/installation/uninstall.md?plain=1#L70
   # Retry sourcing nix-daemon.sh until it succeeds or the maximum number of retries is reached
-  retries=0
-  max_retries=5
-  while [ $retries -lt $max_retries ]; do
-    . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' && break
-    retries=$((retries + 1))
-    sleep 1
+  max_iteration=5
+  for i in $(seq 1 $max_iteration); do
+    set +e
+    . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+    exit_status=$?
+    set -e
+    if [ $exit_status -eq 0 ]; then
+      break
+    else
+      sleep 1
+    fi
   done
-
-  if [ $retries -eq $max_retries ]; then
-    echo "Failed to source nix-daemon.sh after $max_retries retries."
-    exit 1
-  fi
 else
   echo "Nix is already installed. Skipping installation."
 fi
+
+## Install Homebrew
+# Need sudo access on macOS
+# https://github.com/Homebrew/install/blob/fc8acb0828f89f8aa83162000db1b49de71fa5d8/install.sh#L228
+# Install brew non-interactively using NONINTERACTIVE environment variable
+NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Add Homebrew to your PATH
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 ## Install home-manager
 nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
@@ -55,23 +64,14 @@ fi
 # Clone GitHub repo to ~/.config/home-manager
 git clone https://github.com/8ta4/home-manager.git "$HOME/.config/home-manager"
 
-# Run home-manager switch
+## Run home-manager switch
 home-manager switch
 
 ## Install nix-darwin
 nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
 yes | ./result/bin/darwin-installer
 
-## Install Homebrew
-# Need sudo access on macOS
-# https://github.com/Homebrew/install/blob/fc8acb0828f89f8aa83162000db1b49de71fa5d8/install.sh#L228
-# Install brew non-interactively using NONINTERACTIVE environment variable
-NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-# Add Homebrew to your PATH
-eval "$(/opt/homebrew/bin/brew shellenv)"
- 
-# Run brew bundle
+## Run brew bundle
 # Change directory to cloned repo
 cd "$HOME/.config/home-manager"
 brew bundle
