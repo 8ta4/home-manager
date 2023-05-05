@@ -50,6 +50,8 @@ in
     # # symlink to the Nix store copy.
     # ".screenrc".source = dotfiles/screenrc;
     
+    "/.nixpkgs/darwin-configuration.nix".source = ./darwin-configuration.nix;
+    
     "/.config/alacritty/alacritty.yml".source = ./alacritty.yml;
     
     "/Library/Application Support/Google/Chrome/External Extensions/".source = ./. + "/External\ Extensions";
