@@ -67,9 +67,9 @@ fi
 # Clone GitHub repo to ~/.config/home-manager
 git clone https://github.com/8ta4/home-manager.git "$HOME/.config/home-manager"
 
-# Change directory to cloned repo
-cd "$HOME/.config/home-manager"
-
 ## Run home-manager switch and brew bundle
 home-manager switch
+
+# Change directory to cloned repo
+cd "$HOME/.config/home-manager"
 brew bundle
