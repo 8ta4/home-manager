@@ -46,6 +46,10 @@ if [ $retries -eq $max_retries ]; then
   exit 1
 fi
 
+## Build and install nix-darwin
+nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
+yes | ./result/bin/darwin-installer
+
 ## Install home-manager
 nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
 nix-channel --update
