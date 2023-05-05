@@ -2,6 +2,7 @@
 
 set -e
 
+## Install Homebrew
 # Need sudo access on macOS
 # https://github.com/Homebrew/install/blob/fc8acb0828f89f8aa83162000db1b49de71fa5d8/install.sh#L228
 # This will prompt you for the password once, and then subsequent sudo commands will not require a password as long as the authentication is cached.
@@ -25,7 +26,7 @@ for target in "${PROFILE_TARGETS[@]}"; do
   fi
 done
 
-# Install Nix via the recommended multi-user installation
+## Install Nix via the recommended multi-user installation
 yes | sh <(curl -L https://nixos.org/nix/install)
 
 # Nix won't work in active shell sessions until you restart them
@@ -45,7 +46,7 @@ if [ $retries -eq $max_retries ]; then
   exit 1
 fi
 
-# Install home-manager
+## Install home-manager
 nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
 nix-channel --update
 nix-shell '<home-manager>' -A install
@@ -65,6 +66,6 @@ git clone https://github.com/8ta4/home-manager.git "$HOME/.config/home-manager"
 # Change directory to cloned repo
 cd "$HOME/.config/home-manager"
 
-# Run home-manager switch and brew bundle
+## Run home-manager switch and brew bundle
 home-manager switch
 brew bundle
