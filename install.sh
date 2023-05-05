@@ -5,36 +5,41 @@ set -e
 # This will prompt you for the password once, and then subsequent sudo commands will not require a password as long as the authentication is cached.
 sudo true
 
-## Install Nix via the recommended multi-user installation
-# Clean up the old backup file
-# https://github.com/NixOS/nix/blob/89d3cc5a47a448f624ea4c9b43eeee00dcc88a21/scripts/install-multi-user.sh#L36-L37
-readonly PROFILE_TARGETS=("/etc/bashrc" "/etc/profile.d/nix.sh" "/etc/zshrc" "/etc/bash.bashrc" "/etc/zsh/zshrc")
-readonly PROFILE_BACKUP_SUFFIX=".backup-before-nix"
+if ! command -v nix >/dev/null 2>&1; then
+  echo "Nix is not installed. Installing..."
+  ## Install Nix via the recommended multi-user installation
+  # Clean up the old backup file
+  # https://github.com/NixOS/nix/blob/89d3cc5a47a448f624ea4c9b43eeee00dcc88a21/scripts/install-multi-user.sh#L36-L37
+  readonly PROFILE_TARGETS=("/etc/bashrc" "/etc/profile.d/nix.sh" "/etc/zshrc" "/etc/bash.bashrc" "/etc/zsh/zshrc")
+  readonly PROFILE_BACKUP_SUFFIX=".backup-before-nix"
 
-for target in "${PROFILE_TARGETS[@]}"; do
-  backup_target="${target}${PROFILE_BACKUP_SUFFIX}"
-  if [ -e "${backup_target}" ]; then
-    sudo mv "${backup_target}" "${target}"
+  for target in "${PROFILE_TARGETS[@]}"; do
+    backup_target="${target}${PROFILE_BACKUP_SUFFIX}"
+    if [ -e "${backup_target}" ]; then
+      sudo mv "${backup_target}" "${target}"
+    fi
+  done
+
+  yes | sh <(curl -L https://nixos.org/nix/install)
+
+  # Nix won't work in active shell sessions until you restart them
+  # https://github.com/NixOS/nix/issues/3435
+  # https://github.com/NixOS/nix/blob/89d3cc5a47a448f624ea4c9b43eeee00dcc88a21/doc/manual/src/installation/uninstall.md?plain=1#L70
+  # Retry sourcing nix-daemon.sh until it succeeds or the maximum number of retries is reached
+  retries=0
+  max_retries=5
+  while [ $retries -lt $max_retries ]; do
+    . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' && break
+    retries=$((retries + 1))
+    sleep 1
+  done
+
+  if [ $retries -eq $max_retries ]; then
+    echo "Failed to source nix-daemon.sh after $max_retries retries."
+    exit 1
   fi
-done
-
-yes | sh <(curl -L https://nixos.org/nix/install)
-
-# Nix won't work in active shell sessions until you restart them
-# https://github.com/NixOS/nix/issues/3435
-# https://github.com/NixOS/nix/blob/89d3cc5a47a448f624ea4c9b43eeee00dcc88a21/doc/manual/src/installation/uninstall.md?plain=1#L70
-# Retry sourcing nix-daemon.sh until it succeeds or the maximum number of retries is reached
-retries=0
-max_retries=5
-while [ $retries -lt $max_retries ]; do
-  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' && break
-  retries=$((retries + 1))
-  sleep 1
-done
-
-if [ $retries -eq $max_retries ]; then
-  echo "Failed to source nix-daemon.sh after $max_retries retries."
-  exit 1
+else
+  echo "Nix is already installed. Skipping installation."
 fi
 
 ## Install home-manager
