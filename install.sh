@@ -68,10 +68,6 @@ git clone https://github.com/8ta4/home-manager.git "$HOME/.config/home-manager"
 ## Run home-manager switch
 home-manager switch
 
-## Install nix-darwin
-nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
-yes | ./result/bin/darwin-installer
-
 ## Run brew bundle
 # Change directory to cloned repo
 cd "$HOME/.config/home-manager"
